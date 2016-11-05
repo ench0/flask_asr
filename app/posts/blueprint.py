@@ -1,4 +1,5 @@
 from flask import Blueprint
+from flask import render_template
 
 from helpers import object_list
 from models import Post, Tag
