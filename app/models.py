@@ -5,12 +5,12 @@ from app import db
 def slugify(s):
 	return re.sub('[^\w]+', '-', s).lower()
 
-entry_tags = db.Table('entry_tags',
+post_tags = db.Table('post_tags',
 	db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
-	db.Column('entry_id', db.Integer, db.ForeignKey('entry.id'))
+	db.Column('post_id', db.Integer, db.ForeignKey('post.id'))
 )
 
-class Entry(db.Model):
+class Post(db.Model):
 	STATUS_PUBLIC = 0
 	STATUS_DRAFT = 1
 
@@ -25,11 +25,11 @@ class Entry(db.Model):
 		default=datetime.datetime.now,
 		onupdate=datetime.datetime.now)
 
-	tags = db.relationship('Tag', secondary=entry_tags,
-		backref=db.backref('entries', lazy='dynamic'))
+	tags = db.relationship('Tag', secondary=post_tags,
+		backref=db.backref('posts', lazy='dynamic'))
 
 	def __init__(self, *args, **kwargs):
-		super(Entry, self).__init__(*args, **kwargs) # Call parent constructor.
+		super(Post, self).__init__(*args, **kwargs) # Call parent constructor.
 		self.generate_slug()
 
 	def generate_slug(self):
@@ -38,9 +38,9 @@ class Entry(db.Model):
 			self.slug = slugify(self.title)
 
 	def __repr__(self):
-		return '<Entry: %s>' % self.title
+		return '<Post: %s>' % self.title
 	# the __repr__ method that is used to generate a helpful
-	# representation of instances of our Entry class. The specific meaning of __repr__
+	# representation of instances of our Post class. The specific meaning of __repr__
 	# is not important but allows you to reference the object that the program is working
 	# with, when debugging
 
