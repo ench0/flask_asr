@@ -11,9 +11,9 @@ posts = Blueprint('posts', __name__,template_folder='templates')
 def post_list(template, query, **context):
     search = request.args.get('q')
     if search:
-    query = query.filter(
-    (Post.body.contains(search)) |
-    (Post.title.contains(search)))
+        query = query.filter(
+        (Post.body.contains(search)) |
+        (Post.title.contains(search)))
     return object_list(template, query, **context)
 
 
