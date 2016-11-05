@@ -1,0 +1,7 @@
+uwsgi
+Flask
+sqlalchemy
+flask-sqlalchemy
+ipython
+flask-migrate
+wtforms>=2.0
