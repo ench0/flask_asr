@@ -21,5 +21,5 @@ def tag_detail(slug):
 
 @posts.route('/<slug>/')
 def detail(slug):
-    entry = Entry.query.filter(Entry.slug == slug).first_or_404()
-    return render_template('posts/detail.html', entry=entry)
+    post = Post.query.filter(Post.slug == slug).first_or_404()
+    return render_template('posts/detail.html', post=post)
