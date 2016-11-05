@@ -1,15 +1,26 @@
 from flask import Blueprint
 from flask import render_template
 
+from flask import request
+
 from helpers import object_list
 from models import Post, Tag
 
 posts = Blueprint('posts', __name__,template_folder='templates')
 
+def post_list(template, query, **context):
+    search = request.args.get('q')
+    if search:
+    query = query.filter(
+    (Post.body.contains(search)) |
+    (Post.title.contains(search)))
+    return object_list(template, query, **context)
+
+
 @posts.route('/')
 def index():
     posts = Post.query.order_by(Post.created_timestamp.desc())
-    return object_list('posts/index.html', posts)
+    return post_list('posts/index.html', posts)
 
 @posts.route('/tags/')
 def tag_index():
