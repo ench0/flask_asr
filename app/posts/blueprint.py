@@ -18,7 +18,9 @@ def tag_index():
 
 @posts.route('/tags/<slug>/')
 def tag_detail(slug):
-    pass
+    tag = Tag.query.filter(Tag.slug == slug).first_or_404()
+    posts = tag.posts.order_by(Post.created_timestamp.desc())
+    return object_list('posts/tag_detail.html', posts, tag=tag)
 
 @posts.route('/<slug>/')
 def detail(slug):
