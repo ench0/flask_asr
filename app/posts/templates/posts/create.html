@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Create new post{% endblock %}
+
+{% block content_title %}Create new post{% endblock %}
+
+{% block content %}
+    <form action="{{ url_for('posts.create') }}" class="form formhorizontal" method="post">
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label(class='col-sm-3 control-label') }}
+                <div class="col-sm-9">
+                    {{ field(class='form-control') }}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                <button type="submit" class="btn btndefault">Create</button>
+                <a class="btn" href="{{ url_for('posts.index') }}">Cancel</a>
+            </div>
+        </div>
+    </form>
+{% endblock %}

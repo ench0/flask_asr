@@ -3,8 +3,11 @@ from flask import render_template
 
 from flask import request
 
+#??from app import db
+
 from helpers import object_list
 from models import Post, Tag
+from posts.forms import PostForm
 
 posts = Blueprint('posts', __name__,template_folder='templates')
 
@@ -32,6 +35,11 @@ def tag_detail(slug):
     tag = Tag.query.filter(Tag.slug == slug).first_or_404()
     posts = tag.posts.order_by(Post.created_timestamp.desc())
     return object_list('posts/tag_detail.html', posts, tag=tag)
+
+@posts.route('/create/')
+def create():
+form = PostForm()
+return render_template('posts/create.html', form=form)
 
 @posts.route('/<slug>/')
 def detail(slug):
