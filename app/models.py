@@ -73,3 +73,10 @@ class User(db.Model):
 	def generate_slug(self):
 		if self.name:
 			self.slug = slugify(self.name)
+
+
+
+from app import login_manager
+@login_manager.user_loader
+def _user_loader(user_id):
+	return User.query.get(int(user_id))

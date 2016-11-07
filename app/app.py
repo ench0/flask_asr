@@ -24,3 +24,11 @@ migrate = Migrate(app, db)
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
+
+
+# Add to the end of the module.
+login_manager = LoginManager(app)
+login_manager.login_view = "login"
+@app.before_request
+def _before_request():
+    g.user = current_user
