@@ -20,10 +20,10 @@ def post_list(template, query, **context):
 
 def get_post_or_404(slug, author=None):
     query = Post.query.filter(Post.slug == slug)
-    if author:
-        query = query.filter(Post.author == author)
-    else:
-        query = filter_status_by_user(query)
+    # if author:
+    #     query = query.filter(Post.author == author)
+    # else:
+    #     query = filter_status_by_user(query)
     return query.first_or_404()
 
 @posts.route('/')
