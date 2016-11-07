@@ -38,8 +38,8 @@ def tag_detail(slug):
 
 @posts.route('/create/')
 def create():
-form = PostForm()
-return render_template('posts/create.html', form=form)
+    form = PostForm()
+    return render_template('posts/create.html', form=form)
 
 @posts.route('/<slug>/')
 def detail(slug):
