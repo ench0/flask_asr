@@ -1,7 +1,5 @@
 import datetime, re
-from app import db
-from app import login_manager
-
+from app import db, bcrypt, login_manager
 
 # converts to nice urls
 def slugify(s):
