@@ -1,6 +1,6 @@
 import os
 
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import Blueprint, flash, redirect, render_template, request, url_for, g
 from werkzeug import secure_filename
 #??from app import db
 from flask_login import login_required #decorator
@@ -24,11 +24,20 @@ def post_list(template, query, **context):
 
 def get_post_or_404(slug, author=None):
     query = Post.query.filter(Post.slug == slug)
-    # if author:
-    #     query = query.filter(Post.author == author)
-    # else:
-    #     query = filter_status_by_user(query)
+    if author:
+        query = query.filter(Post.author == author)
+    else:
+        query = filter_status_by_user(query)
     return query.first_or_404()
+
+def filter_status_by_user(query):
+    if not g.user.is_authenticated:
+        return query.filter(Post.status == Post.STATUS_PUBLIC)
+    else:
+        return query.filter(
+            Post.status.in_((Post.STATUS_PUBLIC, Post.STATUS_DRAFT)))
+
+
 
 @posts.route('/')
 def index():
@@ -54,7 +63,7 @@ def create():
     if request.method == 'POST':
         form = PostForm(request.form)
         if form.validate():
-            post = form.save_post(Post())
+            post = form.save_post(Post(author=g.user))
             db.session.add(post)
             db.session.commit()
             flash('Post "%s" created successfully.' % post.title, 'success')
@@ -73,7 +82,7 @@ def detail(slug):
 @posts.route('/<slug>/edit/', methods=['GET', 'POST'])
 @login_required
 def edit(slug):
-    post = get_post_or_404(slug)
+    post = get_post_or_404(slug, author=None)
     if request.method == 'POST':
         form = PostForm(request.form, obj=post)
         if form.validate():
@@ -90,7 +99,7 @@ def edit(slug):
 @posts.route('/<slug>/delete/', methods=['GET', 'POST'])
 @login_required
 def delete(slug):
-    post = get_post_or_404(slug)
+    post = get_post_or_404(slug, author=None)
     if request.method == 'POST':
         post.status = Post.STATUS_DELETED
         db.session.add(post)
