@@ -26,6 +26,8 @@ class Post(db.Model):
 		default=datetime.datetime.now,
 		onupdate=datetime.datetime.now)
 
+	author_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+
 	tags = db.relationship('Tag', secondary=post_tags,
 		backref=db.backref('posts', lazy='dynamic'))
 
