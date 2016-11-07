@@ -45,7 +45,7 @@ class Post(db.Model):
 	# is not important but allows you to reference the object that the program is working
 	# with, when debugging
 
-
+# tags
 class Tag(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(64))
@@ -57,3 +57,19 @@ class Tag(db.Model):
 
 	def __repr__(self):
 		return '<Tag %s>' % self.name
+
+# users
+class User(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	email = db.Column(db.String(64), unique=True)
+	password_hash = db.Column(db.String(255))
+	name = db.Column(db.String(64))
+	slug = db.Column(db.String(64), unique=True)
+	active = db.Column(db.Boolean, default=True)
+	created_timestamp = db.Column(db.DateTime, default=datetime.datetime.now)
+	def __init__(self, *args, **kwargs):
+		super(User, self).__init__(*args, **kwargs)
+		self.generate_slug()
+	def generate_slug(self):
+		if self.name:
+			self.slug = slugify(self.name)
