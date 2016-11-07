@@ -95,8 +95,8 @@ class User(db.Model):
 	@staticmethod
 	def authenticate(email, password):
 		user = User.query.filter(User.email == email).first()
-	if user and user.check_password(password):
-		return user
+		if user and user.check_password(password):
+			return user
 	return False
 
 
