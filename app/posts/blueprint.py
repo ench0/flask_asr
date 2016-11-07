@@ -1,7 +1,4 @@
-from flask import Blueprint
-from flask import render_template
-
-from flask import request
+from flask import Blueprint, redirect, render_template, request, url_for
 
 #??from app import db
 
@@ -36,9 +33,18 @@ def tag_detail(slug):
     posts = tag.posts.order_by(Post.created_timestamp.desc())
     return object_list('posts/tag_detail.html', posts, tag=tag)
 
-@posts.route('/create/')
+from app import db
+@posts.route('/create/', methods=['GET', 'POST'])
 def create():
-    form = PostForm()
+    if request.method == 'POST':
+        form = PostForm(request.form)
+        if form.validate():
+            post = form.save_post(Post())
+            db.session.add(post)
+            db.session.commit()
+            return redirect(url_for('posts.detail', slug=post.slug))
+    else:
+        form = PostForm()
     return render_template('posts/create.html', form=form)
 
 @posts.route('/<slug>/')

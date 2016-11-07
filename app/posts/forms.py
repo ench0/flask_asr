@@ -11,3 +11,7 @@ class PostForm(wtforms.Form):
             (Post.STATUS_PUBLIC, 'Public'),
             (Post.STATUS_DRAFT, 'Draft')),
         coerce=int)
+    def save_post(self, post):
+        self.populate_obj(post)
+        post.generate_slug()
+        return post
