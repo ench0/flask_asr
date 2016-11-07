@@ -33,6 +33,7 @@ def tag_detail(slug):
     posts = tag.posts.order_by(Post.created_timestamp.desc())
     return object_list('posts/tag_detail.html', posts, tag=tag)
 
+#create post
 from app import db
 @posts.route('/create/', methods=['GET', 'POST'])
 def create():
@@ -47,11 +48,13 @@ def create():
         form = PostForm()
     return render_template('posts/create.html', form=form)
 
+# display post
 @posts.route('/<slug>/')
 def detail(slug):
     post = Post.query.filter(Post.slug == slug).first_or_404()
     return render_template('posts/detail.html', post=post)
 
+# edit posts
 @posts.route('/<slug>/edit/', methods=['GET', 'POST'])
 def edit(slug):
     post = Post.query.filter(Post.slug == slug).first_or_404()
@@ -65,3 +68,14 @@ def edit(slug):
     else:
         form = PostForm(obj=post)
     return render_template('posts/edit.html', post=post, form=form)
+
+@posts.route('/<slug>/delete/', methods=['GET', 'POST'])
+def delete(slug):
+    post = Post.query.filter(Post.slug == slug).first_or_404()
+    if request.method == 'POST':
+        post.status = Post.STATUS_DELETED
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for('posts.index'))
+
+    return render_template('posts/delete.html', post=post)

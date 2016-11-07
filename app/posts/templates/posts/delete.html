@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content_title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+    <form action="{{ url_for('posts.delete', slug=post.slug) }}" method="post">
+        <fieldset>
+            <legend>Delete this post?</legend>
+            <button class="btn btn-danger" type="submit">Delete</button>
+            <a class="btn" href="{{ url_for('posts.detail', slug=post.slug) }}">Cancel</a>
+        </fieldset>
+    </form>
+{% endblock %}
