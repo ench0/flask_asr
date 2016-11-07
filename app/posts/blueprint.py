@@ -1,10 +1,13 @@
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+import os
 
+from flask import Blueprint, flash, redirect, render_template, request, url_for
+from werkzeug import secure_filename
 #??from app import db
 
+from app import app, db
 from helpers import object_list
 from models import Post, Tag
-from posts.forms import PostForm
+from posts.forms import PostForm, ImageForm
 
 posts = Blueprint('posts', __name__,template_folder='templates')
 
@@ -43,7 +46,7 @@ def tag_detail(slug):
     return object_list('posts/tag_detail.html', posts, tag=tag)
 
 #create post
-from app import db
+#from app import db
 @posts.route('/create/', methods=['GET', 'POST'])
 def create():
     if request.method == 'POST':
@@ -91,3 +94,18 @@ def delete(slug):
         flash('Post "%s" has been deleted.' % post.title, 'success')
         return redirect(url_for('posts.index'))
     return render_template('posts/delete.html', post=post)
+
+# images
+@posts.route('/image-upload/', methods=['GET', 'POST'])
+    def image_upload():
+        if request.method == 'POST':
+            form = ImageForm(request.form)
+            if form.validate():
+                image_file = request.files['file']
+                filename = os.path.join(app.config['IMAGES_DIR'], secure_filename(image_file.filename))
+                image_file.save(filename)
+                flash('Saved %s' % os.path.basename(filename), 'success')
+                return redirect(url_for('posts.index'))
+        else:
+            form = ImageForm()
+        return render_template('posts/image_upload.html', form=form)

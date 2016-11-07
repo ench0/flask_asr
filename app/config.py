@@ -8,3 +8,5 @@ class Configuration(object):
 		SQLALCHEMY_TRACK_MODIFICATIONS = False # to suppress the warning
 		# SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:secretpassword@localhost:5432/app_db'
 		# pip install psycopg2
+		STATIC_DIR = os.path.join(APPLICATION_DIR, 'static')
+		IMAGES_DIR = os.path.join(STATIC_DIR, 'images')
