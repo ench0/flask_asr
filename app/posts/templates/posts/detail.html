@@ -8,6 +8,7 @@
         <li><a href="{{ url_for('posts.tag_detail', slug=tag.slug) }}">{{ tag.name }}</a></li>
     {% endfor %}
     </ul>
+    <a href="{{ url_for('posts.edit', slug=post.slug) }}">Edit</a>
 <p>Published {{ post.created_timestamp.strftime('%m/%d/%Y') }}</p>
 {% endblock %}
 {% block content %}
