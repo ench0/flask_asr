@@ -4,6 +4,7 @@
         <div class="col-sm-9">
             {{ field(class='form-control', **kwargs) }}
             {% if field.errors %}<span class="glyphicon glyphiconwarning-sign form-control-feedback"></span>{% endif %}
+            {% if field.description %}<span class="help-block">{{ field.description|safe }}</span>{% endif %}
             {% for error in field.errors %}<span class="help-block">{{ error }}</span>{% endfor %}
         </div>
     </div>

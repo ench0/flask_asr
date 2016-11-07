@@ -10,6 +10,7 @@
         <li><h4>Actions</h4></li>
         <li><a href="{{ url_for('posts.edit', slug=post.slug) }}">Edit</a></li>
         <li><a href="{{ url_for('posts.delete', slug=post.slug) }}">Delete</a></li>
+        <li><a href="{{ url_for('posts.create', slug=post.slug) }}">Create new</a></li>
     </ul>
 
 <p>Published {{ post.created_timestamp.strftime('%m/%d/%Y') }}</p>
