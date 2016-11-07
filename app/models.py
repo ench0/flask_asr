@@ -76,7 +76,7 @@ class User(db.Model):
 
 	# Flask-Login interface..
 	def get_id(self):
-		return int(self.id, 'utf-8')
+		return str(self.id) #return str(self.id, 'utf-8')
 	def is_authenticated(self):
 		return True
 	def is_active(self):
