@@ -1,5 +1,7 @@
 import datetime, re
 from app import db
+from app import login_manager
+
 
 # converts to nice urls
 def slugify(s):
@@ -100,7 +102,6 @@ class User(db.Model):
 		return False
 
 
-from app import login_manager
 @login_manager.user_loader
 def _user_loader(user_id):
 	return User.query.get(int(user_id))
