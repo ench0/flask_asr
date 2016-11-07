@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, request, url_for
+from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 #??from app import db
 
@@ -19,11 +19,8 @@ def post_list(template, query, **context):
     return object_list(template, query, **context)
 
 def get_post_or_404(slug):
-    valid_statuses = (Post.STATUS_PUBLIC, Post.STATUS_DRAFT) (Post.query
-        .filter(
-            (Post.slug == slug) &
-            (Post.status.in_(valid_statuses)))
-        .first_or_404())
+    valid_statuses = (Post.STATUS_PUBLIC, Post.STATUS_DRAFT) (Post.query.filter(
+        (Post.slug == slug) & (Post.status.in_(valid_statuses))).first_or_404())
 
 
 @posts.route('/')
@@ -52,6 +49,7 @@ def create():
             post = form.save_post(Post())
             db.session.add(post)
             db.session.commit()
+            flash('Post "%s" created successfully.' % post.title, 'success')
             return redirect(url_for('posts.detail', slug=post.slug))
     else:
         form = PostForm()
@@ -73,6 +71,7 @@ def edit(slug):
             post = form.save_post(post)
             db.session.add(post)
             db.session.commit()
+            flash('Post "%s" has been saved.' % post.title, 'success')
             return redirect(url_for('posts.detail', slug=post.slug))
     else:
         form = PostForm(obj=post)
@@ -86,5 +85,6 @@ def delete(slug):
         post.status = Post.STATUS_DELETED
         db.session.add(post)
         db.session.commit()
+        flash('Post "%s" has been deleted.' % post.title, 'success')
         return redirect(url_for('posts.index'))
     return render_template('posts/delete.html', post=post)

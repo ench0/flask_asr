@@ -3,13 +3,15 @@
 {% block content_title %}{{ post.title }}{% endblock %}
 {% block sidebar %}
     <ul class="well nav nav-list">
-    <li><h4>Tags</h4></li>
-    {% for tag in post.tags %}
-        <li><a href="{{ url_for('posts.tag_detail', slug=tag.slug) }}">{{ tag.name }}</a></li>
-    {% endfor %}
+        <li><h4>Tags</h4></li>
+        {% for tag in post.tags %}
+            <li><a href="{{ url_for('posts.tag_detail', slug=tag.slug) }}">{{ tag.name }}</a></li>
+        {% endfor %}
+        <li><h4>Actions</h4></li>
+        <li><a href="{{ url_for('posts.edit', slug=post.slug) }}">Edit</a></li>
+        <li><a href="{{ url_for('posts.delete', slug=post.slug) }}">Delete</a></li>
     </ul>
-    <a href="{{ url_for('posts.edit', slug=post.slug) }}">Edit</a>
-    <a href="{{ url_for('posts.delete', slug=post.slug) }}">Delete</a>
+
 <p>Published {{ post.created_timestamp.strftime('%m/%d/%Y') }}</p>
 {% endblock %}
 {% block content %}
