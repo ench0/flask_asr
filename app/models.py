@@ -97,7 +97,7 @@ class User(db.Model):
 		user = User.query.filter(User.email == email).first()
 		if user and user.check_password(password):
 			return user
-	return False
+		return False
 
 
 from app import login_manager
