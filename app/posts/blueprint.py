@@ -9,12 +9,21 @@ from posts.forms import PostForm
 posts = Blueprint('posts', __name__,template_folder='templates')
 
 def post_list(template, query, **context):
-    search = request.args.get('q')
-    if search:
+    valid_statuses = (Post.STATUS_PUBLIC, Post.STATUS_DRAFT)
+    query = query.filter(Post.status.in_(valid_statuses))
+    if request.args.get('q'):
+        search = request.args['q']
         query = query.filter(
-        (Post.body.contains(search)) |
-        (Post.title.contains(search)))
+            (Post.body.contains(search)) |
+            (Post.title.contains(search)))
     return object_list(template, query, **context)
+
+def get_post_or_404(slug):
+    valid_statuses = (Post.STATUS_PUBLIC, Post.STATUS_DRAFT) (Post.query
+        .filter(
+            (Post.slug == slug) &
+            (Post.status.in_(valid_statuses)))
+        .first_or_404())
 
 
 @posts.route('/')
@@ -48,16 +57,16 @@ def create():
         form = PostForm()
     return render_template('posts/create.html', form=form)
 
-# display post
+# display post / detail view
 @posts.route('/<slug>/')
 def detail(slug):
-    post = Post.query.filter(Post.slug == slug).first_or_404()
+    post = get_post_or_404(slug)
     return render_template('posts/detail.html', post=post)
 
-# edit posts
+# edit post
 @posts.route('/<slug>/edit/', methods=['GET', 'POST'])
 def edit(slug):
-    post = Post.query.filter(Post.slug == slug).first_or_404()
+    post = get_post_or_404(slug)
     if request.method == 'POST':
         form = PostForm(request.form, obj=post)
         if form.validate():
@@ -67,15 +76,15 @@ def edit(slug):
             return redirect(url_for('posts.detail', slug=post.slug))
     else:
         form = PostForm(obj=post)
-    return render_template('posts/edit.html', post=post, form=form)
+    return render_template('posts/edit.html', post=post)
 
+# delete post
 @posts.route('/<slug>/delete/', methods=['GET', 'POST'])
 def delete(slug):
-    post = Post.query.filter(Post.slug == slug).first_or_404()
+    post = get_post_or_404(slug)
     if request.method == 'POST':
         post.status = Post.STATUS_DELETED
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('posts.index'))
-
     return render_template('posts/delete.html', post=post)
