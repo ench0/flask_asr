@@ -14,6 +14,13 @@ from flask_sqlalchemy import SQLAlchemy
 # pip install sqlalchemy
 # pip install flask-sqlalchemy
 
+from flask_bcrypt import Bcrypt
+# from flask.ext.bcrypt import Bcrypt # depreciated
+# pip install flask-bcrypt
+bcrypt = Bcrypt(app)
+
+
+
 from config import Configuration # import our configuration data.
 
 app = Flask(__name__)
