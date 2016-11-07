@@ -17,13 +17,12 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 # from flask.ext.bcrypt import Bcrypt # depreciated
 # pip install flask-bcrypt
-bcrypt = Bcrypt(app)
-
-
 
 from config import Configuration # import our configuration data.
 
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
+
 
 app.config.from_object(Configuration) # use values from our Configuration object.
 db = SQLAlchemy(app)
