@@ -19,7 +19,8 @@ def post_list(template, query, **context):
     return object_list(template, query, **context)
 
 def get_post_or_404(slug):
-    valid_statuses = (Post.STATUS_PUBLIC, Post.STATUS_DRAFT) (Post.query.filter(
+    valid_statuses = (Post.STATUS_PUBLIC, Post.STATUS_DRAFT)
+    (Post.query.filter(
         (Post.slug == slug) & (Post.status.in_(valid_statuses))).first_or_404())
 
 
