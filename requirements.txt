@@ -5,3 +5,4 @@ flask-sqlalchemy
 ipython
 flask-migrate
 wtforms>=2.0
+Flask-Login
