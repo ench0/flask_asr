@@ -18,13 +18,13 @@ def post_list(template, query, **context):
             (Post.title.contains(search)))
     return object_list(template, query, **context)
 
-def get_post_or_404(slug):
-    valid_statuses = ""
-    valid_statuses = (Post.STATUS_PUBLIC, Post.STATUS_DRAFT) (Post.query
-        .filter(
-            (Post.slug == slug) &
-            (Post.status.in_(valid_statuses)))
-        .first_or_404())
+def get_post_or_404(slug, author=None):
+    query = Post.query.filter(Post.slug == slug)
+    if author:
+        query = query.filter(Post.author == author)
+    else:
+        query = filter_status_by_user(query)
+    return query.first_or_404()
 
 @posts.route('/')
 def index():
