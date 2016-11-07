@@ -1,5 +1,6 @@
-from flask import Flaskg
-from flask.ext.login import LoginManager, current_user
+from flask import Flask, g
+from flask_login import LoginManager, current_user
+# from flask.ext.login import LoginManager, current_user # depreciated
 # pip install Flask-Login
 
 # from flask.ext.migrate import Migrate, MigrateCommand # depreciated
