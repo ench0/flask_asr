@@ -40,7 +40,7 @@ class PostModelView(SlugModelView):
     }
     column_filters = ['status', User.name, User.email, 'created_timestamp']
     column_list = [
-        'title', 'slug', 'status', 'author', 'tease', 'tag_list',
+        'post_id', 'title', 'slug', 'status', 'author', 'auth_id', 'tease', 'tag_list',
         'created_timestamp',
     ]
     column_searchable_list = ['title', 'body']
