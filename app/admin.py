@@ -2,6 +2,7 @@ from flask_admin import Admin
 #from flask.ext.admin import Admin #depreciated
 # pip install Flask-Admin
 from flask_admin.contrib.sqla import ModelView
+from flask_admin.contrib.fileadmin import FileAdmin
 
 from app import app, db
 from models import Post, Tag, User, post_tags
@@ -60,7 +61,13 @@ class UserModelView(SlugModelView):
             model.password_hash = User.make_password(form.password.data)
         return super(UserModelView, self).on_model_change(form, model, is_created)
 
+
+class BlogFileAdmin(FileAdmin):
+    pass
+
 admin = Admin(app, 'Blog Admin')
 admin.add_view(PostModelView(Post, db.session))
 admin.add_view(SlugModelView(Tag, db.session))
 admin.add_view(UserModelView(User, db.session))
+admin.add_view(
+    BlogFileAdmin(app.config['STATIC_DIR'], '/static/', name='Static Files'))
