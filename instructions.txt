@@ -52,3 +52,10 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub user@remote-host
 #git credentials
 git credential-osxkeychain
 git config --global credential.helper osxkeychain
+
+
+
+#sqlite
+sqlite3 app.db 
+> .tables
+> DROP TABLE table_name;
