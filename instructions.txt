@@ -48,3 +48,7 @@ sudo ufw allow 'Nginx Full'
 curl -L https://raw.githubusercontent.com/beautifulcode/ssh-copy-id-for-OSX/master/install.sh | sh 
 ssh-keygen
 ssh-copy-id -i ~/.ssh/id_rsa.pub user@remote-host
+
+#git credentials
+git credential-osxkeychain
+git config --global credential.helper osxkeychain
