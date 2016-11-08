@@ -64,3 +64,6 @@ sqlite3 app.db
 > ALTER TABLE {tableName} RENAME TO TempOldTable;
 > CREATE TABLE {tableName} (name TEXT, COLNew {type} DEFAULT {defaultValue}, qty INTEGER, rate REAL);
 > INSERT INTO {tableName} (name, qty, rate) SELECT name, qty, rate FROM TempOldTable;
+> .header on
+> .mode column
+> select * from table_name;
