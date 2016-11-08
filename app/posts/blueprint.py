@@ -55,7 +55,8 @@ def tag_detail(slug):
     posts = tag.posts.order_by(Post.created_timestamp.desc())
     return object_list('posts/tag_detail.html', posts, tag=tag)
 
-#create post
+
+# CREATE POST
 #from app import db
 @posts.route('/create/', methods=['GET', 'POST'])
 @login_required
@@ -72,13 +73,15 @@ def create():
         form = PostForm()
     return render_template('posts/create.html', form=form)
 
-# display post / detail view
+
+# DETAIL VIEW / display post
 @posts.route('/<slug>/')
 def detail(slug):
     post = get_post_or_404(slug)
     return render_template('posts/detail.html', post=post)
 
-# edit post
+
+# EDIT POST
 @posts.route('/<slug>/edit/', methods=['GET', 'POST'])
 @login_required
 def edit(slug):
@@ -95,10 +98,7 @@ def edit(slug):
         form = PostForm(obj=post)
     return render_template('posts/edit.html', post=post, form=form)
 
-
-
-
-# delete post
+# DELETE POST
 @posts.route('/<slug>/delete/', methods=['GET', 'POST'])
 @login_required
 def delete(slug):
@@ -111,7 +111,7 @@ def delete(slug):
         return redirect(url_for('posts.index'))
     return render_template('posts/delete.html', post=post)
 
-# images
+# IMAGES
 @posts.route('/image-upload/', methods=['GET', 'POST'])
 @login_required
 def image_upload():
