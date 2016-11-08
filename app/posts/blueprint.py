@@ -79,26 +79,11 @@ def detail(slug):
     return render_template('posts/detail.html', post=post)
 
 # edit post
-# @posts.route('/<slug>/edit/', methods=['GET', 'POST'])
-# @login_required
-# def edit(slug):
-#     post = get_post_or_404(slug, author=None)
-#     if request.method == 'POST':
-#         form = PostForm(request.form, obj=post)
-#         if form.validate():
-#             post = form.save_post(post)
-#             db.session.add(post)
-#             db.session.commit()
-#             flash('Post "%s" has been saved.' % post.title, 'success')
-#             return redirect(url_for('posts.detail', slug=post.slug))
-#     else:
-#         form = PostForm(obj=post)
-#     return render_template('posts/edit.html', post=post)
-
 @posts.route('/<slug>/edit/', methods=['GET', 'POST'])
 @login_required
 def edit(slug):
-    post = Post.query.filter(Post.slug == slug).first_or_404()
+    post = get_post_or_404(slug, author=None)
+    #post = Post.query.filter(Post.slug == slug).first_or_404()
     if request.method == 'POST':
         form = PostForm(request.form, obj=post)
         if form.validate():
