@@ -12,9 +12,9 @@ from wtforms.fields import PasswordField # At top of module.
 
 
 
-class AdminAuthentication(object):
-    def is_accessible(self):
-        return g.user.is_authenticated and g.user.is_admin()
+# class AdminAuthentication(object):
+#     def is_accessible(self):
+#         return g.user.is_authenticated and g.user.is_admin()
 
 
 # fixing slugs
