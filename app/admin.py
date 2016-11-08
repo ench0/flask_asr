@@ -5,6 +5,7 @@ from flask_admin.contrib.sqla import ModelView
 
 from app import app, db
 from models import Post, Tag, User
+from wtforms.fields import SelectField # At top of module.
 
 class PostModelView(ModelView):
     _status_choices = [(choice, label) for choice, label in [
@@ -15,12 +16,25 @@ class PostModelView(ModelView):
     column_choices = {
         'status': _status_choices,
     }
-
+    column_filters = [
+    'status', User.name, User.email, 'created_timestamp'
+    ]
     column_list = [
         'title', 'status', 'author', 'tease', 'tag_list',
         'created_timestamp',
     ]
+    column_searchable_list = ['title', 'body']
     column_select_related_list = ['author'] # Efficiently SELECT the author.
+    form_args = {
+        'status': {'choices': _status_choices, 'coerce': int},
+    }
+    form_columns = ['title', 'body', 'status', 'author', 'tags']
+    form_overrides = {'status': SelectField}
+    form_ajax_refs = {
+        'author': {
+            'fields': (User.name, User.email),
+        },
+    }
 
 
 class UserModelView(ModelView):
