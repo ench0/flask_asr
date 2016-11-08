@@ -57,7 +57,7 @@ class UserModelView(ModelView):
 admin = Admin(app, 'Blog Admin')
 admin.add_view(PostModelView(Post, db.session))
 admin.add_view(ModelView(Tag, db.session))
-admin.add_view(ModelView(User, db.session))
+#admin.add_view(ModelView(User, db.session))
 
 # Be sure to use the UserModelView class when registering the User:
 admin.add_view(UserModelView(User, db.session))
