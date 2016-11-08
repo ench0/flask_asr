@@ -59,3 +59,8 @@ git config --global credential.helper osxkeychain
 sqlite3 app.db 
 > .tables
 > DROP TABLE table_name;
+> .schema table_name
+> ALTER TABLE {tableName} ADD COLUMN COLNew {type};
+> ALTER TABLE {tableName} RENAME TO TempOldTable;
+> CREATE TABLE {tableName} (name TEXT, COLNew {type} DEFAULT {defaultValue}, qty INTEGER, rate REAL);
+> INSERT INTO {tableName} (name, qty, rate) SELECT name, qty, rate FROM TempOldTable;
