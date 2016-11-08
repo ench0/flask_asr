@@ -79,6 +79,7 @@ class User(db.Model):
 	name = db.Column(db.String(64))
 	slug = db.Column(db.String(64), unique=True)
 	active = db.Column(db.Boolean, default=True)
+	admin = db.Column(db.Boolean, default=False)
 	created_timestamp = db.Column(db.DateTime, default=datetime.datetime.now)
 	posts = db.relationship('Post', backref='author', lazy='dynamic')
 	def __init__(self, *args, **kwargs):
