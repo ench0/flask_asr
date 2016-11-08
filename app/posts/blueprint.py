@@ -40,8 +40,8 @@ def filter_status_by_user(query):
     else:
         # Allow user to view their own drafts.
         query = query.filter(
-            (Entry.status == Entry.STATUS_PUBLIC) |
-            ((Entry.author == g.user) & (Entry.status != Entry.STATUS_DELETED)))
+            (Post.status == Post.STATUS_PUBLIC) |
+            ((Post.author == g.user) & (Post.status != Post.STATUS_DELETED)))
     return query
 
 
