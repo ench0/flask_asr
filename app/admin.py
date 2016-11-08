@@ -13,8 +13,9 @@ from wtforms.fields import PasswordField # At top of module.
 
 
 class AdminAuthentication(object):
-    def is_accessible(self):
-        return g.user.is_authenticated and g.user.is_admin()
+    pass
+    # def is_accessible(self):
+    #     return g.user.is_authenticated and g.user.is_admin()
 
 
 # fixing slugs
@@ -57,10 +58,10 @@ class PostModelView(SlugModelView):
 
 
 class UserModelView(SlugModelView):
-    column_filters = ('email', 'name', 'active')#, 'admin'
-    column_list = ['email', 'name', 'active', 'created_timestamp']#, 'admin'
+    column_filters = ('email', 'name', 'active', 'admin')
+    column_list = ['email', 'name', 'active', 'created_timestamp', 'admin']
     column_searchable_list = ['email', 'name']
-    form_columns = ['email', 'password', 'name', 'active']#, 'admin'
+    form_columns = ['email', 'password', 'name', 'active', 'admin']
     form_extra_fields = {
         'password': PasswordField('New password'),
     }
