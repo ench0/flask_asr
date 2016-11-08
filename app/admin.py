@@ -6,6 +6,7 @@ from flask_admin.contrib.sqla import ModelView
 from app import app, db
 from models import Post, Tag, User
 from wtforms.fields import SelectField # At top of module.
+from wtforms.fields import PasswordField # At top of module.
 
 class PostModelView(ModelView):
     _status_choices = [(choice, label) for choice, label in [
@@ -29,6 +30,13 @@ class PostModelView(ModelView):
         'status': {'choices': _status_choices, 'coerce': int},
     }
     form_columns = ['title', 'body', 'status', 'author', 'tags']
+    form_extra_fields = {
+        'password': PasswordField('New password'),
+        }
+    def on_model_change(self, form, model, is_created):
+        if form.password.data:
+            model.password_hash = User.make_password(form.password.data)
+        return super(UserModelView, self).on_model_change(form, model, is_created)
     form_overrides = {'status': SelectField}
     form_ajax_refs = {
         'author': {
