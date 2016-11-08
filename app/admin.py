@@ -8,9 +8,9 @@ from models import Post, Tag, User
 
 class PostModelView(ModelView):
     _status_choices = [(choice, label) for choice, label in [
-        (Entry.STATUS_PUBLIC, 'Public'),
-        (Entry.STATUS_DRAFT, 'Draft'),
-        (Entry.STATUS_DELETED, 'Deleted'),
+        (Post.STATUS_PUBLIC, 'Public'),
+        (Post.STATUS_DRAFT, 'Draft'),
+        (Post.STATUS_DELETED, 'Deleted'),
     ]]
     column_choices = {
         'status': _status_choices,
