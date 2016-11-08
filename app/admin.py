@@ -1,4 +1,5 @@
-from flask_admin import Admin
+from flask import g, url_for
+from flask_admin import Admin, AdminIndexView, expose
 #from flask.ext.admin import Admin #depreciated
 # pip install Flask-Admin
 from flask_admin.contrib.sqla import ModelView
@@ -9,8 +10,15 @@ from models import Post, Tag, User, post_tags
 from wtforms.fields import SelectField # At top of module.
 from wtforms.fields import PasswordField # At top of module.
 
+
+
+class AdminAuthentication(object):
+    def is_accessible(self):
+        return g.user.is_authenticated and g.user.is_admin()
+
+
 # fixing slugs
-class BaseModelView(ModelView):
+class BaseModelView(AdminAuthentication, ModelView):
     pass
 
 
@@ -62,10 +70,17 @@ class UserModelView(SlugModelView):
         return super(UserModelView, self).on_model_change(form, model, is_created)
 
 
-class BlogFileAdmin(FileAdmin):
+class BlogFileAdmin(AdminAuthentication, FileAdmin):
     pass
 
-admin = Admin(app, 'Blog Admin')
+class IndexView(AdminIndexView):
+    @expose('/')
+    def index(self):
+        if not (g.user.is_authenticated and g.user.is_admin()):
+            return redirect(url_for('login', next=request.path))
+        return self.render('admin/index.html')
+
+admin = Admin(app, 'Blog Admin', index_view=IndexView())
 admin.add_view(PostModelView(Post, db.session))
 admin.add_view(SlugModelView(Tag, db.session))
 admin.add_view(UserModelView(User, db.session))
