@@ -98,6 +98,8 @@ class User(db.Model):
 		return self.active
 	def is_anonymous(self):
 		return False
+	def is_admin(self):
+		return self.admin
 
 	@staticmethod
 	def make_password(plaintext):
