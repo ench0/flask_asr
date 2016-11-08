@@ -79,7 +79,7 @@ class User(db.Model):
 	name = db.Column(db.String(64))
 	slug = db.Column(db.String(64), unique=True)
 	active = db.Column(db.Boolean, default=True)
-	admin = db.Column(db.Boolean, default=True)
+	admin = db.Column(db.Boolean, default=False)
 	created_timestamp = db.Column(db.DateTime, default=datetime.datetime.now)
 	posts = db.relationship('Post', backref='author', lazy='dynamic')
 	def __init__(self, *args, **kwargs):
@@ -91,7 +91,7 @@ class User(db.Model):
 
 	# Flask-Login interface..
 	def get_id(self):
-		return str(self.id) #return str(self.id, 'utf-8')
+		return self.id #return str(self.id, 'utf-8')
 	def is_authenticated(self):
 		return True
 	def is_active(self):

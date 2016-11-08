@@ -13,9 +13,9 @@ from wtforms.fields import PasswordField # At top of module.
 
 
 class AdminAuthentication(object):
-    pass
-    # def is_accessible(self):
-    #     return g.user.is_authenticated and g.user.is_admin()
+    # pass
+    def is_accessible(self):
+        return g.user.is_authenticated and g.user.is_admin()
 
 
 # fixing slugs
@@ -77,8 +77,8 @@ class BlogFileAdmin(AdminAuthentication, FileAdmin):
 class IndexView(AdminIndexView):
     @expose('/')
     def index(self):
-        # if not (g.user.is_authenticated and g.user.is_admin()):
-        #     return redirect(url_for('login', next=request.path))
+        if not (g.user.is_authenticated and g.user.is_admin()):
+            return redirect(url_for('login', next=request.path))
         return self.render('admin/index.html')
 
 admin = Admin(app, 'Blog Admin', index_view=IndexView())
