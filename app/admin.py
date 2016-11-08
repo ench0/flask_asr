@@ -30,13 +30,6 @@ class PostModelView(ModelView):
         'status': {'choices': _status_choices, 'coerce': int},
     }
     form_columns = ['title', 'body', 'status', 'author', 'tags']
-    form_extra_fields = {
-        'password': PasswordField('New password'),
-        }
-    def on_model_change(self, form, model, is_created):
-        if form.password.data:
-            model.password_hash = User.make_password(form.password.data)
-        return super(UserModelView, self).on_model_change(form, model, is_created)
     form_overrides = {'status': SelectField}
     form_ajax_refs = {
         'author': {
@@ -46,8 +39,18 @@ class PostModelView(ModelView):
 
 
 class UserModelView(ModelView):
+    column_filters = ('email', 'name', 'active')
     column_list = ['email', 'name', 'active', 'created_timestamp']
+    column_searchable_list = ['email', 'name']
+    form_columns = ['email', 'password', 'name', 'active']
 
+    form_extra_fields = {
+        'password': PasswordField('New password'),
+        }
+    def on_model_change(self, form, model, is_created):
+        if form.password.data:
+            model.password_hash = User.make_password(form.password.data)
+        return super(UserModelView, self).on_model_change(form, model, is_created)
 
 
 
