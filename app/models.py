@@ -60,7 +60,9 @@ class Post(db.Model):
 	@property
 	def post_id(self):
 		return self.id
-
+	@property
+	def auth_name(self):
+		return self.author_name
 
 
 # tags
