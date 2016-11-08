@@ -7,11 +7,28 @@ from app import app, db
 from models import Post, Tag, User
 
 class PostModelView(ModelView):
+    _status_choices = [(choice, label) for choice, label in [
+        (Entry.STATUS_PUBLIC, 'Public'),
+        (Entry.STATUS_DRAFT, 'Draft'),
+        (Entry.STATUS_DELETED, 'Deleted'),
+    ]]
+    column_choices = {
+        'status': _status_choices,
+    }
+
     column_list = [
         'title', 'status', 'author', 'tease', 'tag_list',
         'created_timestamp',
     ]
     column_select_related_list = ['author'] # Efficiently SELECT the author.
+
+
+class UserModelView(ModelView):
+    column_list = ['email', 'name', 'active', 'created_timestamp']
+
+# Be sure to use the UserModelView class when registering the User:
+admin.add_view(UserModelView(User, db.session))
+
 
 admin = Admin(app, 'Blog Admin')
 admin.add_view(PostModelView(Post, db.session))
