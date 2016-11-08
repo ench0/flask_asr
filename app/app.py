@@ -1,4 +1,14 @@
 from flask import Flask, g
+
+# from flask.ext.sqlalchemy import SQLAlchemy # depreciated
+from flask_sqlalchemy import SQLAlchemy
+# pip install sqlalchemy
+# pip install flask-sqlalchemy
+
+from flask_bcrypt import Bcrypt
+# from flask.ext.bcrypt import Bcrypt # depreciated
+# pip install flask-bcrypt
+
 from flask_login import LoginManager, current_user
 # from flask.ext.login import LoginManager, current_user # depreciated
 # pip install Flask-Login
@@ -9,14 +19,8 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 # pip install flask-migrate
 
-# from flask.ext.sqlalchemy import SQLAlchemy # depreciated
-from flask_sqlalchemy import SQLAlchemy
-# pip install sqlalchemy
-# pip install flask-sqlalchemy
-
-from flask_bcrypt import Bcrypt
-# from flask.ext.bcrypt import Bcrypt # depreciated
-# pip install flask-bcrypt
+from flask_restless import APIManager
+# pip install Flask-Restless
 
 from config import Configuration # import our configuration data.
 
@@ -30,6 +34,8 @@ migrate = Migrate(app, db)
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
+
+api = APIManager(app, flask_sqlalchemy_db=db)
 
 
 # Add to the end of the module.

@@ -67,3 +67,11 @@ sqlite3 app.db
 > .header on
 > .mode column
 > select * from table_name;
+
+
+
+
+# manage
+python manage.py db stamp head
+python manage.py db upgrade head
+python manage.py db migrate

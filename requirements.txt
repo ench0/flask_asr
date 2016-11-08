@@ -8,3 +8,4 @@ wtforms>=2.0
 Flask-Login
 flask-bcrypt
 Flask-Admin
+Flask-Restless

@@ -27,10 +27,9 @@ class Post(db.Model):
 		onupdate=datetime.datetime.now)
 
 	author_id = db.Column("author_id", db.Integer, db.ForeignKey("user.id"))
-	author_name = author_id.name
 
-	tags = db.relationship('Tag', secondary=post_tags,
-		backref=db.backref('posts', lazy='dynamic'))
+	tags = db.relationship('Tag', secondary=post_tags, backref=db.backref('posts', lazy='dynamic'))
+	comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
 	def __init__(self, *args, **kwargs):
 		super(Post, self).__init__(*args, **kwargs) # Call parent constructor.
@@ -62,7 +61,7 @@ class Post(db.Model):
 		return self.id
 	@property
 	def auth_name(self):
-		return self.author_name
+		return self.author.name
 
 
 # tags
@@ -127,3 +126,24 @@ class User(db.Model):
 @login_manager.user_loader
 def _user_loader(user_id):
 	return User.query.get(int(user_id))
+
+
+
+class Comment(db.Model):
+	STATUS_PENDING_MODERATION = 0
+	STATUS_PUBLIC = 1
+	STATUS_SPAM = 8
+	STATUS_DELETED = 9
+
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(64))
+	email = db.Column(db.String(64))
+	url = db.Column(db.String(100))
+	ip_address = db.Column(db.String(64))
+	body = db.Column(db.Text)
+	status = db.Column(db.SmallInteger, default=STATUS_PUBLIC)
+	created_timestamp = db.Column(db.DateTime, default=datetime.
+	datetime.now)
+	post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+	def __repr__(self):
+		return '<Comment from %r>' % (self.name,)

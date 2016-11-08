@@ -40,7 +40,7 @@ class PostModelView(SlugModelView):
     }
     column_filters = ['status', User.name, User.email, 'created_timestamp']
     column_list = [
-        'post_id', 'title', 'slug', 'status', 'author', 'auth_id', 'tease', 'tag_list',
+        'post_id', 'title', 'slug', 'status', 'auth_name', 'auth_id', 'tease', 'tag_list',
         'created_timestamp',
     ]
     column_searchable_list = ['title', 'body']
@@ -71,7 +71,7 @@ class UserModelView(SlugModelView):
         return super(UserModelView, self).on_model_change(form, model, is_created)
 
 
-class BlogFileAdmin(AdminAuthentication, FileAdmin):
+class SiteFileAdmin(AdminAuthentication, FileAdmin):
     pass
 
 class IndexView(AdminIndexView):
@@ -81,9 +81,9 @@ class IndexView(AdminIndexView):
             return redirect(url_for('login', next=request.path))
         return self.render('admin/index.html')
 
-admin = Admin(app, 'Blog Admin', index_view=IndexView())
+admin = Admin(app, 'Site Admin', index_view=IndexView())
 admin.add_view(PostModelView(Post, db.session))
 admin.add_view(SlugModelView(Tag, db.session))
 admin.add_view(UserModelView(User, db.session))
 admin.add_view(
-    BlogFileAdmin(app.config['STATIC_DIR'], '/static/', name='Static Files'))
+    SiteFileAdmin(app.config['STATIC_DIR'], '/static/', name='Static Files'))

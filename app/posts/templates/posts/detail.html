@@ -16,6 +16,7 @@
     </ul>
 
 <p>Published {{ post.created_timestamp.strftime('%m/%d/%Y') }}</p>
+<p>Author {{ post.author.name }}</p>
 {% endblock %}
 {% block content %}
 {{ post.body }}
