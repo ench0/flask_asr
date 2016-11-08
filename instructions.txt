@@ -42,3 +42,9 @@ sudo systemctl restart nginx
 sudo ufw allow 5000
 sudo ufw delete allow 5000
 sudo ufw allow 'Nginx Full'
+
+
+# ssh-copy-id on mac
+curl -L https://raw.githubusercontent.com/beautifulcode/ssh-copy-id-for-OSX/master/install.sh | sh 
+ssh-keygen
+ssh-copy-id -i ~/.ssh/id_rsa.pub user@remote-host
