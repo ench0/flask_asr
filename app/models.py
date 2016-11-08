@@ -26,7 +26,7 @@ class Post(db.Model):
 		default=datetime.datetime.now,
 		onupdate=datetime.datetime.now)
 
-	author_id = db.Column(db.Integer, db.ForeignKey("user.name"))
+	author_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 
 	tags = db.relationship('Tag', secondary=post_tags,
 		backref=db.backref('posts', lazy='dynamic'))
@@ -53,7 +53,9 @@ class Post(db.Model):
 	@property
 	def tease(self):
 		return self.body[:100]
-
+	@property
+	def author(self):
+		return self.User.name[:100]
 
 
 
