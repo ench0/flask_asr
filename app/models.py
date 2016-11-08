@@ -47,6 +47,17 @@ class Post(db.Model):
 	# is not important but allows you to reference the object that the program is working
 	# with, when debugging
 
+	@property
+	def tag_list(self):
+		return ', '.join(tag.name for tag in self.tags)
+	@property
+	def tease(self):
+		return self.body[:100]
+
+
+
+
+
 # tags
 class Tag(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
