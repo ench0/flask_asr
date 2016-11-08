@@ -13,6 +13,8 @@ from posts.forms import PostForm, ImageForm
 posts = Blueprint('posts', __name__,template_folder='templates')
 
 def post_list(template, query, **context):
+    query = filter_status_by_user(query)
+
     valid_statuses = (Post.STATUS_PUBLIC, Post.STATUS_DRAFT)
     query = query.filter(Post.status.in_(valid_statuses))
     if request.args.get('q'):
@@ -22,6 +24,7 @@ def post_list(template, query, **context):
             (Post.title.contains(search)))
     return object_list(template, query, **context)
 
+
 def get_post_or_404(slug, author=None):
     query = Post.query.filter(Post.slug == slug)
     if author:
@@ -30,12 +33,16 @@ def get_post_or_404(slug, author=None):
         query = filter_status_by_user(query)
     return query.first_or_404()
 
+
 def filter_status_by_user(query):
     if not g.user.is_authenticated:
         return query.filter(Post.status == Post.STATUS_PUBLIC)
     else:
-        return query.filter(
-            Post.status.in_((Post.STATUS_PUBLIC, Post.STATUS_DRAFT)))
+        # Allow user to view their own drafts.
+        query = query.filter(
+            (Entry.status == Entry.STATUS_PUBLIC) |
+            ((Entry.author == g.user) & (Entry.status != Entry.STATUS_DELETED)))
+    return query
 
 
 
